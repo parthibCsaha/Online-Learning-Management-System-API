@@ -24,7 +24,7 @@ This project is a RESTful backend for an Online Learning Management System built
 
 ## Architecture & Entity Relationships
 
-The project is organized into distinct layers for controllers, services, repositories, and domain entities. The following UML diagram (in PlantUML syntax) visualizes the main entity relationships:
+The project is organized into distinct layers for controllers, services, repositories, and domain entities. The following UML diagram visualizes the main entity relationships:
 
 ### UML Diagram
 
