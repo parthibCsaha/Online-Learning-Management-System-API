@@ -95,7 +95,7 @@ classDiagram
 ```
 
 ## Technologies Used
- - Java 11+
+ - Java 21
  - Spring Boot
  - Spring Data JPA
  - Spring Security with JWT
