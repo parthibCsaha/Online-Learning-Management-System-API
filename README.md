@@ -30,13 +30,12 @@ The project is organized into distinct layers for controllers, services, reposit
 
 ```plantuml
 @startuml
-' Define styling for tables
-!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
-!define primaryKey(field) <b>field</b>
 
-' Entities for the LMS project
+skinparam classAttributeIconSize 0
 
-Table(User, "User") {
+' Define Entities
+
+class User {
     +Long id
     +String username
     +String password
@@ -44,7 +43,7 @@ Table(User, "User") {
     +String role
 }
 
-Table(Course, "Course") {
+class Course {
     +Long id
     +String title
     +String description
@@ -53,73 +52,66 @@ Table(Course, "Course") {
     +String category
 }
 
-Table(Enrollment, "Enrollment") {
+class Enrollment {
     +Long id
     +LocalDateTime enrolledDate
     +Integer progress
 }
 
-Table(Lesson, "Lesson") {
+class Lesson {
     +Long id
     +String title
     +String content
     +Integer lessonOrder
 }
 
-Table(Assignment, "Assignment") {
+class Assignment {
     +Long id
     +String title
     +String description
     +LocalDate dueDate
 }
 
-Table(Submission, "Submission") {
+class Submission {
     +Long id
     +LocalDateTime submittedAt
     +String fileUrl
     +Double grade
 }
 
-Table(Certificate, "Certificate") {
+class Certificate {
     +Long id
     +String certificateUrl
     +LocalDateTime issuedDate
 }
 
-Table(Review, "Review") {
+class Review {
     +Long id
     +Integer rating
     +String comment
     +LocalDateTime createdAt
 }
 
-' Relationships between entities
+' Define Relationships
 
-' User and Enrollment - one-to-many:
+' User relationships
 User "1" -- "many" Enrollment : enrolls in >
-
-' User and Review - one-to-many:
 User "1" -- "many" Review : writes >
 
-' Course and Enrollment - one-to-many:
-Course "1" -- "many" Enrollment : has enrollments >
-
-' Course and Lesson - one-to-many:
+' Course relationships
+Course "1" -- "many" Enrollment : has >
 Course "1" -- "many" Lesson : contains >
-
-' Course and Assignment - one-to-many:
 Course "1" -- "many" Assignment : offers >
-
-' Assignment and Submission - one-to-many:
-Assignment "1" -- "many" Submission : receives >
-
-' Enrollment and Certificate - one-to-one (or one-to-zero/one):
-Enrollment "1" -- "0..1" Certificate : earns >
-
-' Course and Review - one-to-many:
 Course "1" -- "many" Review : receives >
 
+' Enrollment to Certificate (one-to-(zero or one))
+Enrollment "1" -- "0..1" Certificate : earns >
+
+' Assignment to Submission
+Assignment "1" -- "many" Submission : receives >
+
 @enduml
+
 
 ```
 
