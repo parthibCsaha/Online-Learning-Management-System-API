@@ -28,7 +28,7 @@ The project is organized into distinct layers for controllers, services, reposit
 
 ### UML Diagram
 
-```plantuml
+```mermaid
 @startuml
 
 skinparam classAttributeIconSize 0
