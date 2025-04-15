@@ -29,88 +29,67 @@ The project is organized into distinct layers for controllers, services, reposit
 ### UML Diagram
 
 ```mermaid
-@startuml
+classDiagram
+    class User {
+        +Long id
+        +String username
+        +String password
+        +String email
+        +String role
+    }
 
-skinparam classAttributeIconSize 0
+    class Course {
+        +Long id
+        +String title
+        +String description
+        +String category
+        +String instructorName
+    }
 
-' Define Entities
+    class Enrollment {
+        +Long id
+        +LocalDateTime enrollmentDate
+        +String status
+    }
 
-class User {
-    +Long id
-    +String username
-    +String password
-    +String email
-    +String role
-}
+    class Lesson {
+        +Long id
+        +String title
+        +String content
+        +String videoUrl
+    }
 
-class Course {
-    +Long id
-    +String title
-    +String description
-    +String instructor
-    +Double duration
-    +String category
-}
+    class Assignment {
+        +Long id
+        +String title
+        +String description
+        +LocalDate dueDate
+    }
 
-class Enrollment {
-    +Long id
-    +LocalDateTime enrolledDate
-    +Integer progress
-}
+    class Submission {
+        +Long id
+        +String content
+        +LocalDateTime submittedAt
+        +Double grade
+    }
 
-class Lesson {
-    +Long id
-    +String title
-    +String content
-    +Integer lessonOrder
-}
+    class Review {
+        +Long id
+        +Integer rating
+        +String comment
+        +LocalDateTime createdAt
+    }
 
-class Assignment {
-    +Long id
-    +String title
-    +String description
-    +LocalDate dueDate
-}
+    %% Relationships
+    User "1" -- "many" Enrollment : enrolls >
+    Course "1" -- "many" Enrollment : includes >
+    User "1" -- "many" Review : writes >
+    Course "1" -- "many" Review : receives >
 
-class Submission {
-    +Long id
-    +LocalDateTime submittedAt
-    +String fileUrl
-    +Double grade
-}
-
-class Certificate {
-    +Long id
-    +String certificateUrl
-    +LocalDateTime issuedDate
-}
-
-class Review {
-    +Long id
-    +Integer rating
-    +String comment
-    +LocalDateTime createdAt
-}
-
-' Define Relationships
-
-' User relationships
-User "1" -- "many" Enrollment : enrolls in >
-User "1" -- "many" Review : writes >
-
-' Course relationships
-Course "1" -- "many" Enrollment : has >
-Course "1" -- "many" Lesson : contains >
-Course "1" -- "many" Assignment : offers >
-Course "1" -- "many" Review : receives >
-
-' Enrollment to Certificate (one-to-(zero or one))
-Enrollment "1" -- "0..1" Certificate : earns >
-
-' Assignment to Submission
-Assignment "1" -- "many" Submission : receives >
-
-@enduml
+    Course "1" -- "many" Lesson : contains >
+    Course "1" -- "many" Assignment : assigns >
+    Assignment "1" -- "many" Submission : receives >
+    User "1" -- "many" Submission : submits >
 
 
 ```
