@@ -30,63 +30,97 @@ The project is organized into distinct layers for controllers, services, reposit
 
 ```plantuml
 @startuml
+' Define styling for tables
 !define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
 !define primaryKey(field) <b>field</b>
 
-Table(User, "User")
-User : primaryKey(id)
-User : username
-User : password
-User : email
-User : role
+' Entities for the LMS project
 
-Table(Course, "Course")
-Course : primaryKey(id)
-Course : title
-Course : description
-Course : instructor
-Course : duration
-Course : category
+Table(User, "User") {
+    +Long id
+    +String username
+    +String password
+    +String email
+    +String role
+}
 
-Table(Enrollment, "Enrollment")
-Enrollment : primaryKey(id)
-Enrollment : enrolledDate
-Enrollment : progress
+Table(Course, "Course") {
+    +Long id
+    +String title
+    +String description
+    +String instructor
+    +Double duration
+    +String category
+}
 
-Table(Lesson, "Lesson")
-Lesson : primaryKey(id)
-Lesson : title
-Lesson : content
-Lesson : lessonOrder
+Table(Enrollment, "Enrollment") {
+    +Long id
+    +LocalDateTime enrolledDate
+    +Integer progress
+}
 
-Table(Assignment, "Assignment")
-Assignment : primaryKey(id)
-Assignment : title
-Assignment : description
-Assignment : dueDate
+Table(Lesson, "Lesson") {
+    +Long id
+    +String title
+    +String content
+    +Integer lessonOrder
+}
 
-Table(Submission, "Submission")
-Submission : primaryKey(id)
-Submission : submittedAt
-Submission : fileUrl
-Submission : grade
+Table(Assignment, "Assignment") {
+    +Long id
+    +String title
+    +String description
+    +LocalDate dueDate
+}
 
-Table(Certificate, "Certificate")
-Certificate : primaryKey(id)
-Certificate : certificateUrl
-Certificate : issuedDate
+Table(Submission, "Submission") {
+    +Long id
+    +LocalDateTime submittedAt
+    +String fileUrl
+    +Double grade
+}
 
-' Relationships
-User "1" -- "*" Enrollment : enrolls in
-User "1" -- "*" Review : writes
-Course "1" -- "*" Enrollment : has enrollments
-Course "1" -- "*" Lesson : contains
-Course "1" -- "*" Assignment : has assignments
-Enrollment "1" -- "0..1" Certificate : earns
+Table(Certificate, "Certificate") {
+    +Long id
+    +String certificateUrl
+    +LocalDateTime issuedDate
+}
 
-Assignment "1" -- "*" Submission : receives
+Table(Review, "Review") {
+    +Long id
+    +Integer rating
+    +String comment
+    +LocalDateTime createdAt
+}
+
+' Relationships between entities
+
+' User and Enrollment - one-to-many:
+User "1" -- "many" Enrollment : enrolls in >
+
+' User and Review - one-to-many:
+User "1" -- "many" Review : writes >
+
+' Course and Enrollment - one-to-many:
+Course "1" -- "many" Enrollment : has enrollments >
+
+' Course and Lesson - one-to-many:
+Course "1" -- "many" Lesson : contains >
+
+' Course and Assignment - one-to-many:
+Course "1" -- "many" Assignment : offers >
+
+' Assignment and Submission - one-to-many:
+Assignment "1" -- "many" Submission : receives >
+
+' Enrollment and Certificate - one-to-one (or one-to-zero/one):
+Enrollment "1" -- "0..1" Certificate : earns >
+
+' Course and Review - one-to-many:
+Course "1" -- "many" Review : receives >
 
 @enduml
+
 ```
 
 ## Technologies Used
